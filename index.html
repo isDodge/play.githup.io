@@ -1,121 +1,528 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Aviator WebApp</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOWER RUSH</title>
     <style>
         body {
-            background: #141a29;
+            background: linear-gradient(135deg, #0a0f1e 0%, #141a29 100%);
             color: #fff;
-            font-family: Arial, sans-serif;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
         }
-        .container {
-            background: #1b2438;
-            border-radius: 32px;
-            box-shadow: 0 0 50px 12px #20cbff22;
-            padding: 40px 30px;
-            display: flex; flex-direction: column; align-items: center;
-            margin-top: 40px;
+        
+        .site-title {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 
+                         0 0 30px rgba(255, 215, 0, 0.5),
+                         0 0 45px rgba(255, 215, 0, 0.3);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+            padding: 0;
+            background: none;
+            border-radius: 0;
+            border: none;
         }
-        .coefficient {
-            font-size: 68px;
+        
+        /* Убрана тень под заголовком */
+        .site-title::after {
+            display: none;
+        }
+        
+        .header {
+            text-align: center;
+            font-size: 24px;
             font-weight: bold;
             margin-bottom: 30px;
-            transition: color 0.2s;
+            color: #fff;
+            opacity: 0.8;
         }
-        .crash { color: #ff3e3e;}
-        .win { color: #38f03b;}
-        .button-row {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            align-items: center;
-            margin-bottom: 10px;
-            width: 100%;
-        }
-        .btn {
-            font-size: 24px; font-weight: bold;
-            padding: 14px 48px;
-            border-radius: 14px;
+        
+        .button {
+            display: block;
+            margin: 20px auto;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
             border: none;
-            background: linear-gradient(90deg,#00ceb8 0%, #009e86 100%);
-            color: #fff; cursor: pointer;
-            box-shadow: 0 3px 18px #1fffa288, 0 1px 6px #00ffae29;
-            width: 100%;
-            max-width: 250px;
-            margin: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
         }
-        .btn:active { transform: scale(0.97);}
-        .info {margin-top: 14px; font-size: 18px; color:#ffe67c;}
+        
+        .button:hover {
+            background: linear-gradient(135deg, #66BB6A 0%, #388E3C 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .button:disabled {
+            background: #78909C;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Стили для модального окна */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1e2335 0%, #2a3045 100%);
+            color: #f0f0f0;
+            border-radius: 15px;
+            padding: 30px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        
+        .modal-content h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .modal-text-container {
+            margin: 20px 0;
+            min-height: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow-y: auto;
+            max-height: 300px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .modal-button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff5252 0%, #b33939 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.3);
+        }
+        
+        .modal-button:hover {
+            background: linear-gradient(135deg, #ff6b6b 0%, #c44569 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 82, 82, 0.4);
+        }
+        
+        .hidden-text {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s, transform 0.5s;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .visible-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .numbers-container {
+            display: none;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .number-box {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 10px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.5s, transform 0.5s;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+        
+        .visible-number {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .number-label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Анимация пульсации для заголовка */
+        @keyframes pulse {
+            0% { 
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 
+                             0 0 30px rgba(255, 215, 0, 0.5),
+                             0 0 45px rgba(255, 215, 0, 0.3); 
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 
+                             0 0 40px rgba(255, 215, 0, 0.7),
+                             0 0 60px rgba(255, 215, 0, 0.5); 
+            }
+            100% { 
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 
+                             0 0 30px rgba(255, 215, 0, 0.5),
+                             0 0 45px rgba(255, 215, 0, 0.3); 
+            }
+        }
+        
+        .site-title {
+            animation: pulse 3s infinite;
+        }
+        
+        /* Мобильная версия */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                min-height: 100vh;
+                justify-content: flex-start;
+                padding-top: 40px;
+            }
+            
+            .site-title {
+                font-size: 42px;
+                letter-spacing: 2px;
+                margin-bottom: 20px;
+                text-align: center;
+                line-height: 1.2;
+            }
+            
+            .header {
+                font-size: 18px;
+                margin-bottom: 25px;
+                text-align: center;
+                padding: 0 10px;
+            }
+            
+            .button {
+                width: 90%;
+                max-width: 300px;
+                padding: 16px 24px;
+                font-size: 18px;
+                margin: 15px auto;
+            }
+            
+            .modal-content {
+                width: 90%;
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .modal-text-container {
+                min-height: 150px;
+                max-height: 250px;
+                padding: 15px;
+                font-size: 16px;
+            }
+            
+            .numbers-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .number-box {
+                padding: 15px;
+                font-size: 20px;
+            }
+            
+            .modal-button {
+                width: 100%;
+                padding: 14px;
+                font-size: 18px;
+            }
+        }
+        
+        /* Версия для очень маленьких экранов */
+        @media (max-width: 480px) {
+            .site-title {
+                font-size: 36px;
+                letter-spacing: 1px;
+            }
+            
+            .header {
+                font-size: 16px;
+            }
+            
+            .button {
+                font-size: 16px;
+                padding: 14px 20px;
+            }
+            
+            .modal-content {
+                padding: 15px;
+            }
+            
+            .modal-content h2 {
+                font-size: 20px;
+            }
+            
+            .modal-text-container {
+                min-height: 120px;
+                max-height: 200px;
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            .number-box {
+                padding: 12px;
+                font-size: 18px;
+            }
+        }
+        
+        /* Предотвращение выделения текста на мобильных устройствах */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        /* Разрешить выделение текста в модальном окне */
+        .modal-text-container, .modal-content h2 {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        
+        /* Улучшение скролла на мобильных устройствах */
+        .modal-text-container {
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div id="status" class="coefficient">1.00x</div>
-    <div class="button-row">
-        <button class="btn" id="btn" onclick="cashout()" disabled></button>
-        <button class="btn" id="startBtn" onclick="startGame()"></button>
+    <div class="site-title">TOWER RUSH</div>
+    <div class="header">Добро пожаловать на сайт!</div>
+    
+    <button class="button" id="showTextBtn">Получить сигнал</button>
+
+    <!-- Модальное окно для текста -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <h2>Синхронизация данных с аккаунтом</h2>
+            <div class="modal-text-container" id="modalTextContainer">
+                <!-- Текст будет добавляться динамически -->
+            </div>
+            
+            <!-- Контейнер для чисел внутри модального окна -->
+            <div class="numbers-container" id="numbersContainer">
+                <div class="number-box" id="numberBox1">
+                    <div class="number-label">Количество блоков</div>
+                    <div id="number1"></div>
+                </div>
+                <div class="number-box" id="numberBox2">
+                    <div class="number-label">Коэффициент</div>
+                    <div id="number2"></div>
+                </div>
+                <div class="number-box" id="numberBox3">
+                    <div class="number-label">Вероятность успеха</div>
+                    <div id="number3"></div>
+                </div>
+            </div>
+            
+            <button class="modal-button" id="closeModalBtn">Закрыть</button>
+        </div>
     </div>
-    <div id="result" class="info"></div>
-</div>
-<script>
-    const params = new URLSearchParams(window.location.search);
-    const lang = params.get('lang') || 'ru';
 
-    const translations = {
-        ru: {
-            cash_out: 'Забрать',
-            start: 'Старт',
-            crash: '💥 Самолёт улетел на ',
-            cashout: '✅ Забрал на ',
-        },
-        en: {
-            cash_out: 'Cash Out',
-            start: 'Start',
-            crash: '💥 The plane flew away at ',
-            cashout: '✅ Cashed out at ',
-        }
-    };
+    <script>
+        const textLines = [
+            "Инициализация...",
+            "Подключаемся к 1WIN API...",
+            "Подключение и анализ Tower Rush...",
+            "Оценка вероятностей и рисков...",
+            "Генерируем оптимальный вариант..."
+        ];
 
-    const t = translations[lang] || translations['ru'];
-    document.getElementById('btn').innerText = t.cash_out;
-    document.getElementById('startBtn').innerText = t.start;
+        const showTextBtn = document.getElementById('showTextBtn');
+        const numbersContainer = document.getElementById('numbersContainer');
+        const numberBoxes = [
+            document.getElementById('numberBox1'),
+            document.getElementById('numberBox2'),
+            document.getElementById('numberBox3')
+        ];
+        const numberValues = [
+            document.getElementById('number1'),
+            document.getElementById('number2'),
+            document.getElementById('number3')
+        ];
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTextContainer = document.getElementById('modalTextContainer');
+        const closeModalBtn = document.getElementById('closeModalBtn');
 
-    let coef = 1.00, timer = null, crashed = false, cashouted = false, crashAt = 0;
-    function startGame() {
-        document.getElementById('result').innerText = "";
-        document.getElementById('btn').disabled = false;
-        coef = 1.00; crashed = false; cashouted = false;
-        crashAt = (Math.random()*2 + Math.random()*2 + Math.random()*2 + 1.2).toFixed(2); // чуть чаще 2-3x
-        document.getElementById('status').innerText = coef.toFixed(2) + "x";
-        document.getElementById('status').className = "coefficient";
-        clearInterval(timer);
-        timer = setInterval(() => {
-            coef += 0.03 + coef * 0.035; // ускорение роста
-            document.getElementById('status').innerText = coef.toFixed(2) + "x";
-            if (coef >= crashAt && !cashouted) {
-                crash();
+        showTextBtn.addEventListener('click', startAnimation);
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Добавляем обработчик для закрытия модального окна по клику вне его
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeModal();
             }
-        }, 70);
-    }
-    function crash() {
-        crashed = true;
-        clearInterval(timer);
-        document.getElementById('status').className = "coefficient crash";
-        document.getElementById('result').innerText = t.crash + coef.toFixed(2) + "x";
-        document.getElementById('btn').disabled = true;
-    }
-    function cashout() {
-        if (!crashed && !cashouted) {
-            cashouted = true;
-            clearInterval(timer);
-            document.getElementById('status').className = "coefficient win";
-            document.getElementById('result').innerText = t.cashout + coef.toFixed(2) + "x!";
-            document.getElementById('btn').disabled = true;
+        });
+
+        function startAnimation() {
+            // Отключаем кнопку на время анимации
+            showTextBtn.disabled = true;
+            showTextBtn.textContent = 'Синхронизация...';
+            
+            // Скрываем числа на случай повторного запуска
+            numbersContainer.style.display = 'none';
+            numberBoxes.forEach(box => box.classList.remove('visible-number'));
+            
+            // Показываем модальное окно с плавной анимацией
+            modalOverlay.style.display = 'flex';
+            
+            // Запускаем анимацию появления окна
+            setTimeout(() => {
+                modalOverlay.classList.add('active');
+            }, 10);
+            
+            // Очищаем контейнер текста
+            modalTextContainer.innerHTML = '';
+            
+            // Показываем текст по строкам
+            setTimeout(() => {
+                showTextLineByLine(0);
+            }, 500);
         }
-    }
-</script>
+
+        function showTextLineByLine(index) {
+            if (index >= textLines.length) {
+                // Когда весь текст показан, показываем числа
+                setTimeout(() => {
+                    showRandomNumbers();
+                }, 800);
+                return;
+            }
+
+            // Создаем элемент для новой строки
+            const lineElement = document.createElement('div');
+            lineElement.textContent = textLines[index];
+            lineElement.className = 'hidden-text';
+            
+            // Добавляем в контейнер
+            modalTextContainer.appendChild(lineElement);
+            
+            // Анимируем появление через небольшой таймаут
+            setTimeout(() => {
+                lineElement.classList.add('visible-text');
+                
+                // Рекурсивно вызываем для следующей строки
+                setTimeout(() => {
+                    showTextLineByLine(index + 1);
+                }, 800);
+            }, 100);
+        }
+
+        function showRandomNumbers() {
+            // Генерируем случайные данные
+            const blocksCount = Math.floor(Math.random() * 16) + 5;
+            const coefficient = 1 + (blocksCount * 0.5);
+            const successProbability = (Math.random() * 1.9 + 98).toFixed(1);
+            
+            // Устанавливаем значения
+            numberValues[0].textContent = blocksCount;
+            numberValues[1].textContent = coefficient.toFixed(1);
+            numberValues[2].textContent = successProbability + "%";
+            
+            // Показываем контейнер с числами
+            numbersContainer.style.display = 'flex';
+            
+            // Показываем числа с анимацией
+            numberBoxes.forEach((box, index) => {
+                setTimeout(() => {
+                    box.classList.add('visible-number');
+                }, index * 300);
+            });
+            
+            // Возвращаем кнопку в исходное состояние
+            showTextBtn.disabled = false;
+            showTextBtn.textContent = 'Получить новый сигнал';
+        }
+
+        function closeModal() {
+            // Убираем класс active для анимации закрытия
+            modalOverlay.classList.remove('active');
+            
+            // Ждем завершения анимации и скрываем окно
+            setTimeout(() => {
+                modalOverlay.style.display = 'none';
+                
+                // Скрываем числа при закрытии
+                numbersContainer.style.display = 'none';
+                numberBoxes.forEach(box => box.classList.remove('visible-number'));
+            }, 500);
+        }
+        
+        // Предотвращаем масштабирование на мобильных устройствах при двойном тапе
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </body>
 </html>
