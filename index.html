@@ -6,7 +6,6 @@
     <title>TOWER RUSH</title>
     <style>
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #141a29 100%);
             color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex; 
@@ -17,6 +16,73 @@
             margin: 0;
             padding: 20px;
             overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Анимированный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0f1e 0%, #141a29 100%);
+            overflow: hidden;
+        }
+        
+        .gradient-1, .gradient-2, .gradient-3 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: float 15s infinite linear;
+        }
+        
+        .gradient-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.5) 0%, rgba(76, 175, 80, 0) 70%);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .gradient-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, rgba(255, 215, 0, 0) 70%);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+            animation-direction: reverse;
+        }
+        
+        .gradient-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(33, 150, 243, 0.5) 0%, rgba(33, 150, 243, 0) 70%);
+            bottom: 10%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 30px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 60px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-20px, 30px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
         }
         
         /* Центральный контейнер - уменьшен */
@@ -32,6 +98,40 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Новая надпись "Лучшие сигналы у нас!" */
+        .best-signals {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            letter-spacing: 1px;
+            text-align: center;
+            animation: pulse-gold 2s infinite;
+            position: relative;
+            padding: 10px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        @keyframes pulse-gold {
+            0% { 
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            }
+            50% { 
+                transform: scale(1.05);
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+            }
+            100% { 
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            }
         }
         
         .site-title {
@@ -124,6 +224,7 @@
             opacity: 0;
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1001;
         }
         
         .modal-overlay.active .modal-content {
@@ -213,7 +314,7 @@
             box-shadow: 0 6px 20px rgba(255, 82, 82, 0.4);
         }
         
-        /* ЗЕЛЕНАЯ КНОПКА ДЛЯ "ЗАБРАТЬ СИГНАЛ" */
+        /* ЗЕЛЕНАЯ КНОПКА ДЛЯ "ЗАБРАТЬ СИГНАЛ" С ПЛАВНЫМ ПОЯВЛЕНИЕМ */
         .green-button {
             display: block;
             margin: 20px auto 0;
@@ -225,8 +326,15 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .green-button.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .green-button:hover {
@@ -332,6 +440,12 @@
                 max-width: 400px;
             }
             
+            .best-signals {
+                font-size: 20px;
+                padding: 8px 15px;
+                margin-bottom: 10px;
+            }
+            
             .site-title {
                 font-size: 52px;
                 letter-spacing: 3px;
@@ -395,6 +509,26 @@
             .hidden-text {
                 min-height: 22px;
             }
+            
+            /* Адаптация анимированного фона для мобильных */
+            .gradient-1, .gradient-2, .gradient-3 {
+                filter: blur(40px);
+            }
+            
+            .gradient-1 {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .gradient-2 {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .gradient-3 {
+                width: 220px;
+                height: 220px;
+            }
         }
         
         /* Версия для очень маленьких экранов */
@@ -402,6 +536,11 @@
             .main-container {
                 padding: 20px 15px;
                 max-width: 350px;
+            }
+            
+            .best-signals {
+                font-size: 18px;
+                padding: 6px 12px;
             }
             
             .site-title {
@@ -477,10 +616,21 @@
     </style>
 </head>
 <body>
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="gradient-1"></div>
+        <div class="gradient-2"></div>
+        <div class="gradient-3"></div>
+    </div>
+    
     <!-- Главное меню -->
     <div class="main-container">
+        <!-- Новая надпись "Лучшие сигналы у нас!" -->
+        <div class="best-signals">Лучшие сигналы у нас!</div>
+        
         <div class="site-title">TOWER RUSH</div>
-        <div class="header">Добро пожаловать на сайт!</div>
+        <!-- Замененный текст приветствия -->
+        <div class="header">Не упускай свою возможность.<br> Действуй прямо сейчас!</div>
         
         <button class="button" id="showTextBtn">Получить сигнал</button>
     </div>
@@ -500,7 +650,7 @@
             </div>
             
             <!-- УБРАНА КНОПКА "ЗАКРЫТЬ" И ОСТАВЛЕНА ТОЛЬКО "ЗАБРАТЬ СИГНАЛ" -->
-            <button class="green-button" id="getSignalBtn" style="display: none; margin-top: 10px;">Забрать сигнал</button>
+            <button class="green-button" id="getSignalBtn" style="margin-top: 10px;">Забрать сигнал</button>
         </div>
     </div>
 
@@ -579,8 +729,8 @@
             showTextBtn.disabled = true;
             showTextBtn.textContent = 'Синхронизация...';
             
-            // Скрываем кнопку "Забрать сигнал"
-            getSignalBtn.style.display = 'none';
+            // Скрываем кнопку "Забрать сигнал" с анимацией
+            getSignalBtn.classList.remove('visible');
             
             // Сбрасываем прогресс бар
             progressBar.style.width = '0%';
@@ -604,9 +754,9 @@
 
         function showTextLineByLine(index) {
             if (index >= textLines.length) {
-                // Когда весь текст показан, показываем кнопку "Забрать сигнал"
+                // Когда весь текст показан, показываем кнопку "Забрать сигнал" с анимацией
                 setTimeout(() => {
-                    getSignalBtn.style.display = 'block';
+                    getSignalBtn.classList.add('visible');
                     showTextBtn.disabled = false;
                     showTextBtn.textContent = 'Новый сигнал';
                 }, 800);
