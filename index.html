@@ -19,14 +19,14 @@
             overflow-x: hidden;
         }
         
-        /* Центральный контейнер */
+        /* Центральный контейнер - уменьшен */
         .main-container {
             background: linear-gradient(135deg, rgba(30, 35, 53, 0.9) 0%, rgba(42, 48, 69, 0.9) 100%);
             border-radius: 20px;
-            padding: 40px;
+            padding: 35px 25px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 600px;
+            max-width: 450px; /* Уменьшена ширина */
             width: 100%;
             text-align: center;
             display: flex;
@@ -35,14 +35,14 @@
         }
         
         .site-title {
-            font-size: 72px;
+            font-size: 85px;
             font-weight: 900;
             margin-bottom: 20px;
             color: #FFD700;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 
-                         0 0 30px rgba(255, 215, 0, 0.5),
-                         0 0 45px rgba(255, 215, 0, 0.3);
-            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 
+                         0 0 40px rgba(255, 215, 0, 0.6),
+                         0 0 60px rgba(255, 215, 0, 0.4);
+            letter-spacing: 5px;
             text-transform: uppercase;
             position: relative;
             padding: 0;
@@ -74,7 +74,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
             width: 100%;
-            max-width: 300px;
+            max-width: 250px;
         }
         
         .button:hover {
@@ -90,7 +90,7 @@
             box-shadow: none;
         }
         
-        /* Стили для модального окна */
+        /* Стили для модальных окон */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -117,7 +117,7 @@
             border-radius: 15px;
             padding: 30px;
             width: 80%;
-            max-width: 600px;
+            max-width: 500px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             position: relative;
             transform: translateY(30px) scale(0.95);
@@ -139,19 +139,55 @@
             margin-bottom: 20px;
         }
         
+        /* Прогресс бар с эффектом свечения - УВЕЛИЧЕНА ЯРКОСТЬ */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #FFD700);
+            width: 0%;
+            transition: width 0.8s ease;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.9),
+                        0 0 25px rgba(76, 175, 80, 0.7),
+                        0 0 35px rgba(76, 175, 80, 0.5);
+            animation: glow 1.2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px rgba(76, 175, 80, 0.9),
+                            0 0 20px rgba(76, 175, 80, 0.7),
+                            0 0 30px rgba(76, 175, 80, 0.5);
+            }
+            to {
+                box-shadow: 0 0 15px rgba(76, 175, 80, 1),
+                            0 0 30px rgba(76, 175, 80, 0.8),
+                            0 0 45px rgba(76, 175, 80, 0.6);
+            }
+        }
+        
+        /* УВЕЛИЧЕНА ВЫСОТА КОНТЕЙНЕРА ДЛЯ ТЕКСТА */
         .modal-text-container {
             margin: 20px 0;
-            min-height: 200px;
+            min-height: 280px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
-            overflow-y: auto;
-            max-height: 300px;
+            overflow: hidden;
+            max-height: 350px;
             font-size: 16px;
             line-height: 1.5;
-            /* Фиксированная высота для предотвращения движения */
-            height: 200px;
+            height: 280px;
             display: flex;
             flex-direction: column;
         }
@@ -177,6 +213,28 @@
             box-shadow: 0 6px 20px rgba(255, 82, 82, 0.4);
         }
         
+        /* ЗЕЛЕНАЯ КНОПКА ДЛЯ "ЗАБРАТЬ СИГНАЛ" */
+        .green-button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .green-button:hover {
+            background: linear-gradient(135deg, #66BB6A 0%, #388E3C 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
         .hidden-text {
             opacity: 0;
             transform: translateY(10px);
@@ -185,8 +243,8 @@
             padding: 8px;
             border-radius: 4px;
             background: rgba(255, 255, 255, 0.05);
-            /* Фиксированная высота для каждой строки */
             min-height: 24px;
+            flex-shrink: 0;
         }
         
         .visible-text {
@@ -194,26 +252,35 @@
             transform: translateY(0);
         }
         
+        /* Контейнер для чисел - отдельное модальное окно */
+        .numbers-modal .modal-content {
+            max-width: 600px; /* Шире для квадратов */
+        }
+        
         .numbers-container {
-            display: none;
+            display: flex;
             justify-content: space-between;
             margin-top: 30px;
-            gap: 15px;
+            gap: 20px;
         }
         
         .number-box {
             flex: 1;
-            padding: 20px;
+            padding: 30px 20px; /* Увеличен padding */
             text-align: center;
             background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);
             color: white;
-            font-size: 24px;
+            font-size: 28px; /* Увеличен размер шрифта */
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 12px;
             opacity: 0;
             transform: scale(0.8);
             transition: opacity 0.5s, transform 0.5s;
-            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .visible-number {
@@ -222,27 +289,28 @@
         }
         
         .number-label {
-            font-size: 14px;
-            margin-bottom: 8px;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px; /* Увеличен размер шрифта */
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
         }
         
         /* Анимация пульсации для заголовка */
         @keyframes pulse {
             0% { 
-                text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 
-                             0 0 30px rgba(255, 215, 0, 0.5),
-                             0 0 45px rgba(255, 215, 0, 0.3); 
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 
+                             0 0 40px rgba(255, 215, 0, 0.6),
+                             0 0 60px rgba(255, 215, 0, 0.4); 
             }
             50% { 
-                text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 
-                             0 0 40px rgba(255, 215, 0, 0.7),
-                             0 0 60px rgba(255, 215, 0, 0.5); 
+                text-shadow: 0 0 25px rgba(255, 215, 0, 1), 
+                             0 0 50px rgba(255, 215, 0, 0.8),
+                             0 0 75px rgba(255, 215, 0, 0.6); 
             }
             100% { 
-                text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 
-                             0 0 30px rgba(255, 215, 0, 0.5),
-                             0 0 45px rgba(255, 215, 0, 0.3); 
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 
+                             0 0 40px rgba(255, 215, 0, 0.6),
+                             0 0 60px rgba(255, 215, 0, 0.4); 
             }
         }
         
@@ -259,13 +327,14 @@
             }
             
             .main-container {
-                padding: 30px 20px;
+                padding: 25px 20px;
                 margin: 0;
+                max-width: 400px;
             }
             
             .site-title {
-                font-size: 42px;
-                letter-spacing: 2px;
+                font-size: 52px;
+                letter-spacing: 3px;
                 margin-bottom: 20px;
                 text-align: center;
                 line-height: 1.2;
@@ -280,7 +349,7 @@
             
             .button {
                 width: 90%;
-                max-width: 300px;
+                max-width: 250px;
                 padding: 16px 24px;
                 font-size: 18px;
                 margin: 15px auto;
@@ -290,27 +359,34 @@
                 width: 90%;
                 padding: 20px;
                 margin: 10px;
+                max-width: 450px;
             }
             
+            .numbers-modal .modal-content {
+                max-width: 450px;
+            }
+            
+            /* УВЕЛИЧЕНА ВЫСОТА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
             .modal-text-container {
-                min-height: 150px;
-                max-height: 250px;
+                min-height: 250px;
+                max-height: 300px;
                 padding: 15px;
                 font-size: 16px;
-                height: 150px;
+                height: 250px;
             }
             
             .numbers-container {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 10px;
             }
             
             .number-box {
-                padding: 15px;
-                font-size: 20px;
+                padding: 20px 15px;
+                font-size: 24px;
+                min-height: 100px;
             }
             
-            .modal-button {
+            .modal-button, .green-button {
                 width: 100%;
                 padding: 14px;
                 font-size: 18px;
@@ -325,11 +401,12 @@
         @media (max-width: 480px) {
             .main-container {
                 padding: 20px 15px;
+                max-width: 350px;
             }
             
             .site-title {
-                font-size: 36px;
-                letter-spacing: 1px;
+                font-size: 42px;
+                letter-spacing: 2px;
             }
             
             .header {
@@ -339,32 +416,48 @@
             .button {
                 font-size: 16px;
                 padding: 14px 20px;
+                max-width: 220px;
             }
             
             .modal-content {
                 padding: 15px;
+                max-width: 350px;
+            }
+            
+            .numbers-modal .modal-content {
+                max-width: 350px;
             }
             
             .modal-content h2 {
                 font-size: 20px;
             }
             
+            /* УВЕЛИЧЕНА ВЫСОТА ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ */
             .modal-text-container {
-                min-height: 120px;
-                max-height: 200px;
+                min-height: 220px;
+                max-height: 250px;
                 padding: 12px;
                 font-size: 14px;
-                height: 120px;
+                height: 220px;
             }
             
             .number-box {
-                padding: 12px;
-                font-size: 18px;
+                padding: 15px 10px;
+                font-size: 20px;
+                min-height: 80px;
+            }
+            
+            .number-label {
+                font-size: 14px;
             }
             
             .hidden-text {
                 min-height: 20px;
                 font-size: 14px;
+            }
+            
+            .numbers-container {
+                gap: 8px;
             }
         }
         
@@ -381,14 +474,10 @@
             -webkit-user-select: text;
             user-select: text;
         }
-        
-        /* Улучшение скролла на мобильных устройствах */
-        .modal-text-container {
-            -webkit-overflow-scrolling: touch;
-        }
     </style>
 </head>
 <body>
+    <!-- Главное меню -->
     <div class="main-container">
         <div class="site-title">TOWER RUSH</div>
         <div class="header">Добро пожаловать на сайт!</div>
@@ -396,31 +485,47 @@
         <button class="button" id="showTextBtn">Получить сигнал</button>
     </div>
 
-    <!-- Модальное окно для текста -->
-    <div class="modal-overlay" id="modalOverlay">
+    <!-- Модальное окно для текста и прогресса -->
+    <div class="modal-overlay" id="textModalOverlay">
         <div class="modal-content">
             <h2>Синхронизация данных с аккаунтом</h2>
+            
+            <!-- Прогресс бар с эффектом свечения -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
             <div class="modal-text-container" id="modalTextContainer">
                 <!-- Текст будет добавляться динамически -->
             </div>
             
-            <!-- Контейнер для чисел внутри модального окна -->
+            <!-- УБРАНА КНОПКА "ЗАКРЫТЬ" И ОСТАВЛЕНА ТОЛЬКО "ЗАБРАТЬ СИГНАЛ" -->
+            <button class="green-button" id="getSignalBtn" style="display: none; margin-top: 10px;">Забрать сигнал</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно для квадратов с числами -->
+    <div class="modal-overlay numbers-modal" id="numbersModalOverlay">
+        <div class="modal-content">
+            <h2>Ваш сигнал готов</h2>
+            
+            <!-- Контейнер для чисел -->
             <div class="numbers-container" id="numbersContainer">
                 <div class="number-box" id="numberBox1">
-                    <div class="number-label">Количество блоков</div>
+                    <div class="number-label">Блоков</div>
                     <div id="number1"></div>
                 </div>
                 <div class="number-box" id="numberBox2">
-                    <div class="number-label">Коэффициент</div>
+                    <div class="number-label">Цель</div>
                     <div id="number2"></div>
                 </div>
                 <div class="number-box" id="numberBox3">
-                    <div class="number-label">Вероятность успеха</div>
+                    <div class="number-label">Вероятность</div>
                     <div id="number3"></div>
                 </div>
             </div>
             
-            <button class="modal-button" id="closeModalBtn">Закрыть</button>
+            <button class="modal-button" id="closeNumbersModalBtn">Закрыть</button>
         </div>
     </div>
 
@@ -445,35 +550,47 @@
             document.getElementById('number2'),
             document.getElementById('number3')
         ];
-        const modalOverlay = document.getElementById('modalOverlay');
+        const textModalOverlay = document.getElementById('textModalOverlay');
+        const numbersModalOverlay = document.getElementById('numbersModalOverlay');
         const modalTextContainer = document.getElementById('modalTextContainer');
-        const closeModalBtn = document.getElementById('closeModalBtn');
+        const closeNumbersModalBtn = document.getElementById('closeNumbersModalBtn');
+        const getSignalBtn = document.getElementById('getSignalBtn');
+        const progressBar = document.getElementById('progressBar');
 
-        showTextBtn.addEventListener('click', startAnimation);
-        closeModalBtn.addEventListener('click', closeModal);
+        showTextBtn.addEventListener('click', startTextAnimation);
+        closeNumbersModalBtn.addEventListener('click', closeNumbersModal);
+        getSignalBtn.addEventListener('click', showNumbersModal);
 
-        // Добавляем обработчик для закрытия модального окна по клику вне его
-        modalOverlay.addEventListener('click', function(e) {
-            if (e.target === modalOverlay) {
-                closeModal();
+        // Добавляем обработчики для закрытия модальных окон по клику вне их
+        textModalOverlay.addEventListener('click', function(e) {
+            if (e.target === textModalOverlay) {
+                closeTextModal();
             }
         });
 
-        function startAnimation() {
+        numbersModalOverlay.addEventListener('click', function(e) {
+            if (e.target === numbersModalOverlay) {
+                closeNumbersModal();
+            }
+        });
+
+        function startTextAnimation() {
             // Отключаем кнопку на время анимации
             showTextBtn.disabled = true;
             showTextBtn.textContent = 'Синхронизация...';
             
-            // Скрываем числа на случай повторного запуска
-            numbersContainer.style.display = 'none';
-            numberBoxes.forEach(box => box.classList.remove('visible-number'));
+            // Скрываем кнопку "Забрать сигнал"
+            getSignalBtn.style.display = 'none';
             
-            // Показываем модальное окно с плавной анимацией
-            modalOverlay.style.display = 'flex';
+            // Сбрасываем прогресс бар
+            progressBar.style.width = '0%';
+            
+            // Показываем модальное окно с текстом
+            textModalOverlay.style.display = 'flex';
             
             // Запускаем анимацию появления окна
             setTimeout(() => {
-                modalOverlay.classList.add('active');
+                textModalOverlay.classList.add('active');
             }, 10);
             
             // Очищаем контейнер текста
@@ -487,12 +604,18 @@
 
         function showTextLineByLine(index) {
             if (index >= textLines.length) {
-                // Когда весь текст показан, показываем числа
+                // Когда весь текст показан, показываем кнопку "Забрать сигнал"
                 setTimeout(() => {
-                    showRandomNumbers();
+                    getSignalBtn.style.display = 'block';
+                    showTextBtn.disabled = false;
+                    showTextBtn.textContent = 'Новый сигнал';
                 }, 800);
                 return;
             }
+
+            // Обновляем прогресс бар
+            const progress = ((index + 1) / textLines.length) * 100;
+            progressBar.style.width = progress + '%';
 
             // Создаем элемент для новой строки
             const lineElement = document.createElement('div');
@@ -502,6 +625,9 @@
             // Добавляем в контейнер
             modalTextContainer.appendChild(lineElement);
             
+            // Добавляем случайную задержку для имитации загрузки (300-1000ms)
+            const randomDelay = Math.random() * 700 + 300;
+            
             // Анимируем появление через небольшой таймаут
             setTimeout(() => {
                 lineElement.classList.add('visible-text');
@@ -510,10 +636,13 @@
                 setTimeout(() => {
                     showTextLineByLine(index + 1);
                 }, 800);
-            }, 100);
+            }, randomDelay);
         }
 
-        function showRandomNumbers() {
+        function showNumbersModal() {
+            // Закрываем окно с текстом
+            closeTextModal();
+            
             // Генерируем случайные данные
             const blocksCount = Math.floor(Math.random() * 16) + 5;
             const coefficient = 1 + (blocksCount * 0.5);
@@ -524,32 +653,42 @@
             numberValues[1].textContent = coefficient.toFixed(1);
             numberValues[2].textContent = successProbability + "%";
             
-            // Показываем контейнер с числами
-            numbersContainer.style.display = 'flex';
+            // Сбрасываем анимацию квадратов
+            numberBoxes.forEach(box => box.classList.remove('visible-number'));
             
-            // Показываем числа с анимацией
-            numberBoxes.forEach((box, index) => {
-                setTimeout(() => {
-                    box.classList.add('visible-number');
-                }, index * 300);
-            });
+            // Показываем модальное окно с числами
+            numbersModalOverlay.style.display = 'flex';
             
-            // Возвращаем кнопку в исходное состояние
-            showTextBtn.disabled = false;
-            showTextBtn.textContent = 'Получить новый сигнал';
+            // Запускаем анимацию появления окна
+            setTimeout(() => {
+                numbersModalOverlay.classList.add('active');
+                
+                // Показываем числа с анимацией
+                numberBoxes.forEach((box, index) => {
+                    setTimeout(() => {
+                        box.classList.add('visible-number');
+                    }, index * 400);
+                });
+            }, 10);
         }
 
-        function closeModal() {
+        function closeTextModal() {
             // Убираем класс active для анимации закрытия
-            modalOverlay.classList.remove('active');
+            textModalOverlay.classList.remove('active');
             
             // Ждем завершения анимации и скрываем окно
             setTimeout(() => {
-                modalOverlay.style.display = 'none';
-                
-                // Скрываем числа при закрытии
-                numbersContainer.style.display = 'none';
-                numberBoxes.forEach(box => box.classList.remove('visible-number'));
+                textModalOverlay.style.display = 'none';
+            }, 500);
+        }
+
+        function closeNumbersModal() {
+            // Убираем класс active для анимации закрытия
+            numbersModalOverlay.classList.remove('active');
+            
+            // Ждем завершения анимации и скрываем окно
+            setTimeout(() => {
+                numbersModalOverlay.style.display = 'none';
             }, 500);
         }
         
