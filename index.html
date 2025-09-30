@@ -100,6 +100,7 @@
             align-items: center;
             position: relative;
             z-index: 1;
+            margin-top: 20px; /* Добавлен отступ сверху для заголовка */
         }
         
         /* Новая надпись "Лучшие сигналы у нас!" */
@@ -209,6 +210,11 @@
         
         .modal-overlay.active {
             opacity: 1;
+        }
+        
+        /* Уменьшенная прозрачность для фона модальных окон */
+        .modal-overlay.less-transparent {
+            background-color: rgba(0, 0, 0, 0.9);
         }
         
         .modal-content {
@@ -426,6 +432,17 @@
             animation: pulse 3s infinite;
         }
         
+        /* Текст под квадратами в третьем окне */
+        .signal-info {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
         /* Мобильная версия */
         @media (max-width: 768px) {
             body {
@@ -623,12 +640,14 @@
         <div class="gradient-3"></div>
     </div>
     
+    <!-- Заголовок игры над контейнером -->
+    <div class="site-title">TOWER RUSH</div>
+    
     <!-- Главное меню -->
     <div class="main-container">
-        <!-- Новая надпись "Лучшие сигналы у нас!" -->
+        <!-- Надпись "Лучшие сигналы у нас!" теперь внутри контейнера -->
         <div class="best-signals">Лучшие сигналы у нас!</div>
         
-        <div class="site-title">TOWER RUSH</div>
         <!-- Замененный текст приветствия -->
         <div class="header">Не упускай свою возможность.<br> Действуй прямо сейчас!</div>
         
@@ -666,7 +685,7 @@
                     <div id="number1"></div>
                 </div>
                 <div class="number-box" id="numberBox2">
-                    <div class="number-label">Цель</div>
+                    <div class="number-label">Коэффициент</div>
                     <div id="number2"></div>
                 </div>
                 <div class="number-box" id="numberBox3">
@@ -674,6 +693,9 @@
                     <div id="number3"></div>
                 </div>
             </div>
+            
+            <!-- Текст под квадратами -->
+            <div class="signal-info" id="signalInfo"></div>
             
             <button class="modal-button" id="closeNumbersModalBtn">Закрыть</button>
         </div>
@@ -706,6 +728,7 @@
         const closeNumbersModalBtn = document.getElementById('closeNumbersModalBtn');
         const getSignalBtn = document.getElementById('getSignalBtn');
         const progressBar = document.getElementById('progressBar');
+        const signalInfo = document.getElementById('signalInfo');
 
         showTextBtn.addEventListener('click', startTextAnimation);
         closeNumbersModalBtn.addEventListener('click', closeNumbersModal);
@@ -734,6 +757,9 @@
             
             // Сбрасываем прогресс бар
             progressBar.style.width = '0%';
+            
+            // Добавляем класс для уменьшения прозрачности фона
+            textModalOverlay.classList.add('less-transparent');
             
             // Показываем модальное окно с текстом
             textModalOverlay.style.display = 'flex';
@@ -800,11 +826,17 @@
             
             // Устанавливаем значения
             numberValues[0].textContent = blocksCount;
-            numberValues[1].textContent = coefficient.toFixed(1);
-            numberValues[2].textContent = successProbability + "%";
+            numberValues[1].textContent = "x" + coefficient.toFixed(1); // Добавлен префикс "x"
+            numberValues[2].textContent = "97.9%"; // Фиксированная вероятность 97.9%
+            
+            // Обновляем текст под квадратами
+            signalInfo.textContent = `Поставьте ${blocksCount} блок(ов) и забирайте при коэффициенте x${coefficient.toFixed(1)}`;
             
             // Сбрасываем анимацию квадратов
             numberBoxes.forEach(box => box.classList.remove('visible-number'));
+            
+            // Добавляем класс для уменьшения прозрачности фона
+            numbersModalOverlay.classList.add('less-transparent');
             
             // Показываем модальное окно с числами
             numbersModalOverlay.style.display = 'flex';
@@ -826,6 +858,9 @@
             // Убираем класс active для анимации закрытия
             textModalOverlay.classList.remove('active');
             
+            // Убираем класс уменьшенной прозрачности
+            textModalOverlay.classList.remove('less-transparent');
+            
             // Ждем завершения анимации и скрываем окно
             setTimeout(() => {
                 textModalOverlay.style.display = 'none';
@@ -835,6 +870,9 @@
         function closeNumbersModal() {
             // Убираем класс active для анимации закрытия
             numbersModalOverlay.classList.remove('active');
+            
+            // Убираем класс уменьшенной прозрачности
+            numbersModalOverlay.classList.remove('less-transparent');
             
             // Ждем завершения анимации и скрываем окно
             setTimeout(() => {
