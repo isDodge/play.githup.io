@@ -815,43 +815,79 @@
             }, randomDelay);
         }
 
-        // Новая функция для генерации взвешенных случайных чисел (4-13 с приоритетом маленьких)
+        // Функция для генерации взвешенных случайных чисел (4-13 с приоритетом маленьких)
         function generateWeightedBlocks() {
-            // Создаем веса: меньшие числа имеют больший вес
-            const weights = [12, 10, 9, 8, 7, 6, 5, 4, 3, 2]; // Веса для чисел 4-13
+            const weights = [12, 10, 9, 8, 7, 6, 5, 4, 3, 2];
             const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
             
-            // Генерируем случайное число с учетом весов
             let random = Math.random() * totalWeight;
             let weightSum = 0;
             
             for (let i = 0; i < weights.length; i++) {
                 weightSum += weights[i];
                 if (random <= weightSum) {
-                    return i + 4; // Возвращаем число от 4 до 13
+                    return i + 4;
                 }
             }
             
-            // Если что-то пошло не так, возвращаем среднее значение
             return 7;
+        }
+
+        // Функция для генерации взвешенного коэффициента (0.5-2.5 с приоритетом меньших значений)
+        function generateWeightedCoefficient() {
+            const weights = [8, 7, 6, 5, 4, 3, 2, 1]; // Веса для значений от 0.5 до 2.5 с шагом 0.25
+            const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+            
+            let random = Math.random() * totalWeight;
+            let weightSum = 0;
+            
+            for (let i = 0; i < weights.length; i++) {
+                weightSum += weights[i];
+                if (random <= weightSum) {
+                    return 0.5 + (i * 0.25); // Возвращаем от 0.5 до 2.5 с шагом 0.25
+                }
+            }
+            
+            return 1.0;
+        }
+
+        // Функция для генерации вероятности от 87.5% до 93.2%
+        function generateProbability() {
+            const min = 87.5;
+            const max = 93.2;
+            const probability = Math.random() * (max - min) + min;
+            return probability.toFixed(1) + '%';
+        }
+
+        // Функция для расчета общего коэффициента на основе количества блоков
+        function calculateTotalCoefficient(blocksCount) {
+            let totalCoefficient = 1.0;
+            
+            // Для каждого блока добавляем случайный коэффициент
+            for (let i = 0; i < blocksCount; i++) {
+                const blockCoefficient = generateWeightedCoefficient();
+                totalCoefficient += blockCoefficient;
+            }
+            
+            return totalCoefficient;
         }
 
         function showNumbersModal() {
             // Закрываем окно с текстом
             closeTextModal();
             
-            // Генерируем случайные данные с новой функцией
+            // Генерируем случайные данные
             const blocksCount = generateWeightedBlocks();
-            const coefficient = 1 + (blocksCount * 0.5);
-            const successProbability = (Math.random() * 1.9 + 98).toFixed(1);
+            const totalCoefficient = calculateTotalCoefficient(blocksCount);
+            const successProbability = generateProbability();
             
             // Устанавливаем значения
             numberValues[0].textContent = blocksCount;
-            numberValues[1].textContent = "x" + coefficient.toFixed(1); // Добавлен префикс "x"
-            numberValues[2].textContent = "97.9%"; // Фиксированная вероятность 97.9%
+            numberValues[1].textContent = "x" + totalCoefficient.toFixed(2);
+            numberValues[2].textContent = successProbability;
             
             // Обновляем текст под квадратами
-            signalInfo.textContent = `Поставьте ${blocksCount} блок(ов) и забирайте при коэффициенте x${coefficient.toFixed(1)}`;
+            signalInfo.textContent = `Поставьте ${blocksCount} блок(ов) и забирайте при коэффициенте x${totalCoefficient.toFixed(2)}`;
             
             // Сбрасываем анимацию квадратов
             numberBoxes.forEach(box => box.classList.remove('visible-number'));
