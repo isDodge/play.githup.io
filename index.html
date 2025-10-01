@@ -815,12 +815,33 @@
             }, randomDelay);
         }
 
+        // Новая функция для генерации взвешенных случайных чисел (4-13 с приоритетом маленьких)
+        function generateWeightedBlocks() {
+            // Создаем веса: меньшие числа имеют больший вес
+            const weights = [12, 10, 9, 8, 7, 6, 5, 4, 3, 2]; // Веса для чисел 4-13
+            const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+            
+            // Генерируем случайное число с учетом весов
+            let random = Math.random() * totalWeight;
+            let weightSum = 0;
+            
+            for (let i = 0; i < weights.length; i++) {
+                weightSum += weights[i];
+                if (random <= weightSum) {
+                    return i + 4; // Возвращаем число от 4 до 13
+                }
+            }
+            
+            // Если что-то пошло не так, возвращаем среднее значение
+            return 7;
+        }
+
         function showNumbersModal() {
             // Закрываем окно с текстом
             closeTextModal();
             
-            // Генерируем случайные данные
-            const blocksCount = Math.floor(Math.random() * 16) + 5;
+            // Генерируем случайные данные с новой функцией
+            const blocksCount = generateWeightedBlocks();
             const coefficient = 1 + (blocksCount * 0.5);
             const successProbability = (Math.random() * 1.9 + 98).toFixed(1);
             
