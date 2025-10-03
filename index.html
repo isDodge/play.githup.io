@@ -815,40 +815,14 @@
             }, randomDelay);
         }
 
-        // Функция для генерации взвешенных случайных чисел (4-13 с приоритетом маленьких)
-        function generateWeightedBlocks() {
-            const weights = [12, 10, 9, 8, 7, 6, 5, 4, 3, 2];
-            const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-            
-            let random = Math.random() * totalWeight;
-            let weightSum = 0;
-            
-            for (let i = 0; i < weights.length; i++) {
-                weightSum += weights[i];
-                if (random <= weightSum) {
-                    return i + 4;
-                }
-            }
-            
-            return 7;
+        // Функция для генерации случайного количества блоков от 3 до 9
+        function generateBlocks() {
+            return Math.floor(Math.random() * 7) + 3; // 3-9
         }
 
-        // Функция для генерации взвешенного коэффициента (0.5-2.5 с приоритетом меньших значений)
-        function generateWeightedCoefficient() {
-            const weights = [8, 7, 6, 5, 4, 3, 2, 1]; // Веса для значений от 0.5 до 2.5 с шагом 0.25
-            const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-            
-            let random = Math.random() * totalWeight;
-            let weightSum = 0;
-            
-            for (let i = 0; i < weights.length; i++) {
-                weightSum += weights[i];
-                if (random <= weightSum) {
-                    return 0.5 + (i * 0.25); // Возвращаем от 0.5 до 2.5 с шагом 0.25
-                }
-            }
-            
-            return 1.0;
+        // Функция для генерации коэффициента от 1.2 до 2.5
+        function generateCoefficient() {
+            return (Math.random() * 1.3 + 1.2).toFixed(2); // 1.2-2.5
         }
 
         // Функция для генерации вероятности от 87.5% до 93.2%
@@ -859,35 +833,22 @@
             return probability.toFixed(1) + '%';
         }
 
-        // Функция для расчета общего коэффициента на основе количества блоков
-        function calculateTotalCoefficient(blocksCount) {
-            let totalCoefficient = 1.0;
-            
-            // Для каждого блока добавляем случайный коэффициент
-            for (let i = 0; i < blocksCount; i++) {
-                const blockCoefficient = generateWeightedCoefficient();
-                totalCoefficient += blockCoefficient;
-            }
-            
-            return totalCoefficient;
-        }
-
         function showNumbersModal() {
             // Закрываем окно с текстом
             closeTextModal();
             
             // Генерируем случайные данные
-            const blocksCount = generateWeightedBlocks();
-            const totalCoefficient = calculateTotalCoefficient(blocksCount);
+            const blocksCount = generateBlocks();
+            const coefficient = generateCoefficient();
             const successProbability = generateProbability();
             
             // Устанавливаем значения
             numberValues[0].textContent = blocksCount;
-            numberValues[1].textContent = "x" + totalCoefficient.toFixed(2);
+            numberValues[1].textContent = "x" + coefficient;
             numberValues[2].textContent = successProbability;
             
             // Обновляем текст под квадратами
-            signalInfo.textContent = `Поставьте ${blocksCount} блок(ов) и забирайте при коэффициенте x${totalCoefficient.toFixed(2)}`;
+            signalInfo.textContent = `Поставьте ${blocksCount} блок(ов) и забирайте при коэффициенте x${coefficient}`;
             
             // Сбрасываем анимацию квадратов
             numberBoxes.forEach(box => box.classList.remove('visible-number'));
